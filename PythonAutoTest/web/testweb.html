@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>測試網站 - 練習用</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .btn {
+        margin: 10px 0;
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      input {
+        padding: 5px;
+        width: 200px;
+        margin: 5px 0;
+      }
+      .hidden {
+        display: none;
+      }
+      .form-section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1
+      title="我是大標題"
+      onclick="document.getElementById('show').value='大標題'"
+    >
+      歡迎來到測試網站
+    </h1>
+    <h2
+      title="我是次標題"
+      onclick="document.getElementById('show').value='次標題'"
+    >
+      這是次標題
+    </h2>
+
+    <input id="show" type="text" placeholder="顯示欄位" />
+    <br />
+    <button
+      class="btn"
+      onclick="document.getElementById('show').value='按鈕點擊'"
+    >
+      按我
+    </button>
+    <br />
+    <a href="https://www.google.com" target="_blank"
+      >我是超連結，點擊會開啟 Google 網站</a
+    >
+    <br /><br />
+    <select
+      id="select"
+      onchange="document.getElementById('show').value=this.value"
+    >
+      <option value="選項一">選項一</option>
+      <option value="選項二">選項二</option>
+      <option value="選項三">選項三</option>
+    </select>
+
+    <br /><br />
+    <form
+      onsubmit="document.getElementById('submit-status').textContent='已提交'; return false;"
+    >
+      <input id="name" name="name" type="text" placeholder="請輸入姓名" />
+      <input type="submit" value="提交" />
+    </form>
+    <p id="submit-status"></p>
+
+    <!-- 登入區塊 -->
+    <div class="form-section">
+      <h3>登入 Login</h3>
+      <form id="login-form">
+        <input id="login-username" type="text" placeholder="帳號" required />
+        <input
+          id="login-password"
+          type="password"
+          placeholder="密碼"
+          required
+        />
+        <input type="submit" value="登入" />
+      </form>
+      <p id="login-result"></p>
+    </div>
+
+    <!-- 註冊區塊 -->
+    <div class="form-section">
+      <h3>註冊 Register</h3>
+      <form id="register-form">
+        <input
+          id="reg-username"
+          type="text"
+          placeholder="帳號 (至少4碼)"
+          required
+          minlength="4"
+        />
+        <input
+          id="reg-password"
+          type="password"
+          placeholder="密碼 (至少6碼含1大寫與數字)"
+          required
+          pattern="(?=.*[A-Z])(?=.*\d).{6,}"
+        />
+        <input
+          id="reg-confirm"
+          type="password"
+          placeholder="確認密碼"
+          required
+        />
+        <input type="submit" value="註冊" />
+      </form>
+      <p id="register-result"></p>
+    </div>
+
+    <script>
+      async function apiRegister(username, password) {
+        const r = document.getElementById("register-result");
+        const confirm = document.getElementById("reg-confirm").value;
+        if (password !== confirm) {
+          r.textContent = "註冊失敗：密碼不一致";
+          r.className = "error";
+          return;
+        }
+        try {
+          const res = await fetch("http://127.0.0.1:5000/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+          const data = await res.json();
+          r.textContent = data.message || data.error;
+          r.className = res.ok ? "success" : "error";
+        } catch (err) {
+          r.textContent = "伺服器錯誤";
+          r.className = "error";
+        }
+      }
+
+      async function apiLogin(username, password) {
+        const r = document.getElementById("login-result");
+        try {
+          const res = await fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+          const data = await res.json();
+          r.textContent = data.message;
+          r.className = res.ok ? "success" : "error";
+        } catch (err) {
+          r.textContent = "伺服器錯誤";
+          r.className = "error";
+        }
+      }
+
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const u = document.getElementById("reg-username").value;
+          const p = document.getElementById("reg-password").value;
+          apiRegister(u, p);
+        });
+
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const u = document.getElementById("login-username").value;
+          const p = document.getElementById("login-password").value;
+          apiLogin(u, p);
+        });
+    </script>
+  </body>
+</html>

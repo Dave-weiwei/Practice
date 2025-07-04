@@ -1,0 +1,14 @@
+{
+  "cases": [
+    [8165156, "admin123", "輸入格式錯誤"],
+    ["admin@test.com", 8465123, "輸入格式錯誤"],
+    ["admintest.com", "admin123", "輸入格式錯誤"],
+    ["acom", "admin123", "輸入格式錯誤"],
+    ["admin@test.com", "ad23", "輸入格式錯誤"],
+    ["admin@test.com", "ad23asdasd", "帳號或密碼錯誤"],
+    
+    ["admin@test.com", "admin123", "登入成功"],
+    ["user1@example.com", "password1", "登入成功"],
+    ["abc@aaaa", "password1", "登入成功"]
+  ]
+}
