@@ -1,0 +1,14 @@
+{
+  "test_submit_name": [
+    {
+      "id": "submit-with-name",
+      "name_text": "小王",
+      "expected": "已提交"
+    },
+    {
+      "id": "submit-empty-name",
+      "name_text": "膽小狗",
+      "expected": "已提交"
+    }
+  ]
+}
