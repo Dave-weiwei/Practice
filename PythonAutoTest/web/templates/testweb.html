@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>測試網站 - 練習用</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .btn {
+        margin: 10px 0;
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      input {
+        padding: 5px;
+        width: 200px;
+        margin: 5px 0;
+      }
+      .hidden {
+        display: none;
+      }
+      .form-section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1
+      title="我是大標題"
+      onclick="document.getElementById('show').value='大標題'"
+    >
+      歡迎來到測試網站
+    </h1>
+    <h2
+      title="我是次標題"
+      onclick="document.getElementById('show').value='次標題'"
+    >
+      這是次標題
+    </h2>
+
+    <input id="show" type="text" placeholder="顯示欄位" />
+    <br />
+    <button
+      class="btn"
+      onclick="document.getElementById('show').value='按鈕點擊'"
+    >
+      按我
+    </button>
+    <br />
+    <a href="https://www.google.com" target="_blank"
+      >我是超連結，點擊會開啟 Google 網站</a
+    >
+    <br /><br />
+    <select
+      id="select"
+      onchange="document.getElementById('show').value=this.value"
+    >
+      <option value="選項一">選項一</option>
+      <option value="選項二">選項二</option>
+      <option value="選項三">選項三</option>
+    </select>
+
+    <br /><br />
+    <form
+      onsubmit="document.getElementById('submit-status').textContent='已提交'; return false;"
+    >
+      <input id="name" name="name" type="text" placeholder="請輸入姓名" />
+      <input type="submit" value="提交" />
+    </form>
+    <p id="submit-status"></p>
+
+    <!-- 登入區塊 -->
+    <form id="login-form">
+      <h3>登入</h3>
+      <input
+        id="login-username"
+        name="username"
+        type="text"
+        placeholder="帳號"
+        required
+      />
+      <input
+        id="login-password"
+        name="password"
+        type="password"
+        placeholder="密碼"
+        required
+      />
+      <input type="submit" value="登入" />
+      <div id="login-result"></div>
+    </form>
+
+    <!-- 註冊區塊 -->
+    <form id="register-form">
+      <h3>註冊</h3>
+      <input
+        id="reg-username"
+        name="username"
+        type="email"
+        placeholder="請輸入有效 Email"
+        required
+        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+      />
+      <input
+        id="reg-password"
+        name="password"
+        type="password"
+        placeholder="密碼 (至少6碼含1大寫與數字)"
+        required
+        pattern="(?=.*[A-Z])(?=.*\d).{6,}"
+      />
+      <input
+        id="reg-confirm"
+        name="confirm"
+        type="password"
+        placeholder="確認密碼"
+        required
+        minlength="6"
+      />
+      <input type="submit" value="註冊" />
+      <div id="register-result"></div>
+    </form>
+
+    <script>
+      // 登入提交
+      document.getElementById("login-form").onsubmit = async function (e) {
+        e.preventDefault();
+        const username = document.getElementById("login-username").value;
+        const password = document.getElementById("login-password").value;
+
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const result = await response.json();
+        document.getElementById("login-result").innerText =
+          result.message || result.error;
+      };
+
+      // 註冊提交
+      document.getElementById("register-form").onsubmit = async function (e) {
+        e.preventDefault();
+        const username = document.getElementById("reg-username").value;
+        const password = document.getElementById("reg-password").value;
+        const confirm = document.getElementById("reg-confirm").value;
+
+        if (password !== confirm) {
+          document.getElementById("register-result").innerText =
+            "註冊失敗：密碼不一致";
+          return;
+        }
+
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const result = await response.json();
+        document.getElementById("register-result").innerText =
+          result.message || result.error;
+      };
+    </script>
+  </body>
+</html>
