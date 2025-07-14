@@ -1,26 +1,20 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.select import Select
-from scr import for_try
+from scr.Index_page import IndexPage
+from scr.for_try import use_try
+from scr.pic_name import extract_parametrize_id
+from scr.json_use import load_test_data
 import pytest
-import time
 
-@pytest.mark.parametrize("index, expected", [
-    (0, "選項一"),
-    (1, "選項二"),
-    (2, "選項三"),
-])
+test_sel_datas = load_test_data("test_select.json","test_select_options")
+params = [pytest.param(d["sel_item"], d["expected"], id=d["id"]) for d in test_sel_datas]
+@pytest.mark.parametrize("sel_item, expected", params)
 
-def test_select(driver,index,expected):
-    driver.get("file:///D:/PythonAutoTest/web/testweb.html")
-    WebDriverWait
-    def de_test():
-        sel = Select(driver.find_element(By.ID,'select'))
-        sel.select_by_index(index)
-        sel_set = sel.first_selected_option.text
-        show=driver.find_element(By.ID,"show").get_attribute("value")
-        assert sel_set == expected
-        assert show == expected
-
-    for_try.use_try(driver,de_test,expected)
-    time.sleep(0.3)
+def test_default_check(driver, sel_item, expected , request):
+    page=IndexPage(driver,)
+    page.open()
+    def do_test():
+        sel_text, show_val=page.select(sel_item)
+        assert sel_text == expected
+        assert show_val == expected
+    
+    pic = extract_parametrize_id(request)
+    use_try(driver, do_test, pic)

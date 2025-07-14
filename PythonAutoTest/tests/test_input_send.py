@@ -5,18 +5,16 @@ from scr.json_use import load_test_data
 from selenium.webdriver.common.by import By
 import pytest
 
-datas = load_test_data("login_test.json","test_login")
-params = [pytest.param(d["user"], d["pwd"], d["expected"], id=d["id"]) for d in datas]
-@pytest.mark.parametrize("user, pwd, expected", params)
+test_send_datas = load_test_data("send_input.json","test_submit_name")
+params = [pytest.param(d["name_text"], d["expected"], id=d["id"]) for d in test_send_datas]
+@pytest.mark.parametrize("name_text, expected", params)
 
-def test_reg(driver, user, pwd, expected,request):
+def test_input_send(driver,name_text,expected, request):
     page=IndexPage(driver)
     page.open()
     
     def do_test():
-        result=page.login(user, pwd)
+        result = page.input_send(name_text)
         assert result == expected
-        
-        
     pic = extract_parametrize_id(request)
     use_try(driver, do_test, pic)
