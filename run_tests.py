@@ -8,14 +8,15 @@ timestamp = datetime.now().strftime("%Y-%m-%d")
 timestamp_file = datetime.now().strftime("%H-%M-%S")
 report_dir = os.path.join(REPORT_ROOT, timestamp)
 os.makedirs(report_dir, exist_ok=True)
+log_dir = os.path.join(report_dir, "logs")  # ✅ log 子目錄
+os.makedirs(log_dir, exist_ok=True)         # ✅ log 資料夾先建立
 
 for browser in BROWSERS:
     # 為每種瀏覽器建立獨立報告
     report_file = f"{timestamp_file}_{browser}_report.html"
     report_path = os.path.join(report_dir, report_file)
-    log_dir = os.path.join(report_dir, "logs")  # ✅ log 子目錄
-    os.makedirs(log_dir, exist_ok=True)         # ✅ log 資料夾先建立
-
+    log_file = os.path.join(log_dir, f"{timestamp_file}_{browser}_log.txt")
+    
     print(f"\n🔍 執行 {browser} 測試...")
     
     pytest_args = [
