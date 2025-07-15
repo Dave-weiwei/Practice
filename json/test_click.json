@@ -1,0 +1,22 @@
+{
+  "test_click_update_show": [
+    {
+      "id": "click-h1-update-show",
+      "by": "css selector",
+      "target": "h1[title=\"我是大標題\"]",
+      "expected": "大標題"
+    },
+    {
+      "id": "click-h2-update-show",
+      "by": "css selector",
+      "target": "h2[title=\"我是次標題\"]",
+      "expected": "次標題"
+    },
+    {
+      "id": "click-button-update-show",
+      "by": "class name",
+      "target": "btn",
+      "expected": "按鈕點擊"
+    }
+  ]
+}
