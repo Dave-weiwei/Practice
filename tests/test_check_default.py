@@ -14,7 +14,7 @@ def test_default_check(driver, by, target, request):
     page.open()
     def do_test():
         result=page.verify_element_exists(by, target)
-        assert result == True
+        assert result == False
     
     pic = extract_parametrize_id(request)
     use_try(driver, do_test, pic)

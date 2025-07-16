@@ -1,4 +1,5 @@
 import os
+import allure
 from datetime import datetime
 
 def use_try(driver, func, pic_name, folder="fail_screenshots"):
@@ -15,16 +16,18 @@ def use_try(driver, func, pic_name, folder="fail_screenshots"):
     except Exception as e:
 
         date_folder = datetime.now().strftime("%Y-%m-%d")
-
         folder_path = os.path.join("tests", folder, date_folder)
         os.makedirs(folder_path, exist_ok=True)
-
-        # 產生時間戳與完整路徑
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         file_path = os.path.join(folder_path, f"{pic_name}.png")
-
+        
         # 儲存截圖
         driver.save_screenshot(file_path)
         print(f"[!] 測試失敗，自動截圖已儲存：{file_path}")
         print(f"[!] 錯誤訊息：{e}")
+        
+        # 👉 Allure 嵌入圖片（需 allure-pytest 套件）
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as f:
+                allure.attach(f.read(), name=pic_name, attachment_type=allure.attachment_type.PNG)
+
         raise e  # 將錯誤拋出給 pytest 判斷為失敗

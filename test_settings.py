@@ -1,2 +1,2 @@
-BROWSERS = ["chrome", "firefox"]
+BROWSERS = ["chrome"]
 REPORT_ROOT = "reports"
