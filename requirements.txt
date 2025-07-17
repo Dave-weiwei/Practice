@@ -3,6 +3,6 @@ allure-pytest
 pytest-cov
 selenium
 pymysql
+mysql-connector-python
 flask
-py
 webdriver-manager
