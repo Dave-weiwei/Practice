@@ -3,6 +3,7 @@ import pytest
 import subprocess
 from datetime import datetime
 import webbrowser
+import platform
 from test_settings import BROWSERS, REPORT_ROOT
 
 # 1. 建立主資料夾（日期命名）
@@ -16,7 +17,10 @@ log_dir = os.path.join(report_dir, "logs")
 os.makedirs(log_dir, exist_ok=True)
 
 # 3. 設定 Allure 及測試結果輸出資料夾
-allure_cli = os.path.expanduser("~/scoop/apps/allure/current/bin/allure.bat")
+if platform.system() == "Windows":
+    allure_cli = os.path.expanduser("~/scoop/apps/allure/current/bin/allure.bat")
+else:
+    allure_cli = "allure"  # Linux 上直接執行
 
 if not os.path.exists(allure_cli):
     print(f"❌ 找不到 Allure CLI：{allure_cli}")
@@ -51,5 +55,5 @@ for browser in BROWSERS:
     print(f"\n✅ Allure 報告已產生：{allure_html}")
 
 index_file = os.path.join(allure_html, "index.html")
-# subprocess.run([allure_cli, "serve", allure_raw])
+subprocess.run([allure_cli, "serve", allure_raw])
 webbrowser.open(f"file://{os.path.abspath(index_file)}")
