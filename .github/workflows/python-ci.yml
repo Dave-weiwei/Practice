@@ -46,6 +46,11 @@ jobs:
       - name: 等待 MySQL 啟動
         run: sleep 20
 
+      - name: 啟動 Flask 測試伺服器
+        run: |
+          nohup python app.py > flask.log 2>&1 &
+          sleep 5
+
       - name: 執行測試
         run: |
           python run_tests.py
