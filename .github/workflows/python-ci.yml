@@ -1,0 +1,52 @@
+name: Python-practice-Test-CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ok88468ok
+          MYSQL_DATABASE: test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: 檢出程式碼
+        uses: actions/checkout@v3
+
+      - name: 安裝 Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: 安裝套件
+        run: |
+          pip install -r requirements.txt
+
+      - name: 等待 MySQL 啟動
+        run: sleep 20
+
+      - name: 執行測試
+        run: |
+          python run_tests.py
+
+      - name: 上傳測試結果（可加 Allure HTML）
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-report
+          path: ./reports
