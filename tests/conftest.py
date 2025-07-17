@@ -22,8 +22,6 @@ def driver(request):
     browser = request.config.getoption("--mybrowser")
 
     if browser == "chrome":
-        service = ChromeService(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service)
         chrome_options = ChromeOptions()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
@@ -31,11 +29,9 @@ def driver(request):
         chrome_options.add_argument("--disable-gpu")  # 雖然在 headless 模式 GPU 不重要，但仍建議加
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument("--window-size=1920,1080")
-        
-        
+        service = ChromeService(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
     elif browser == "firefox":
-        service = FirefoxService(GeckoDriverManager().install())
-        driver = webdriver.Firefox(service=service)
         firefox_options = FirefoxOptions()
         firefox_options.add_argument("--headless")
         service = FirefoxService(GeckoDriverManager().install())
