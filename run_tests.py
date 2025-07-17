@@ -2,6 +2,7 @@ import os
 import pytest
 import subprocess
 from datetime import datetime
+import shutil
 import webbrowser
 import platform
 from test_settings import BROWSERS, REPORT_ROOT
@@ -22,7 +23,7 @@ if platform.system() == "Windows":
 else:
     allure_cli = "allure"  # Linux 上直接執行
 
-if not os.path.exists(allure_cli):
+if shutil.which(allure_cli) is None:
     print(f"❌ 找不到 Allure CLI：{allure_cli}")
     exit(1)
 
@@ -55,5 +56,5 @@ for browser in BROWSERS:
     print(f"\n✅ Allure 報告已產生：{allure_html}")
 
 index_file = os.path.join(allure_html, "index.html")
-subprocess.run([allure_cli, "serve", allure_raw])
-webbrowser.open(f"file://{os.path.abspath(index_file)}")
+# subprocess.run([allure_cli, "serve", allure_raw])
+# webbrowser.open(f"file://{os.path.abspath(index_file)}")
