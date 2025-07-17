@@ -48,7 +48,7 @@ jobs:
 
       - name: 啟動 Flask 測試伺服器
         run: |
-          nohup python app.py > flask.log 2>&1 &
+          python app.py > flask.log 2>&1 &
           sleep 5
 
       - name: 顯示 Flask 啟動記錄（flask.log）
