@@ -1,5 +1,6 @@
 # 🧪 Web 自動化測試練習平台
 
+![CI Status](https://github.com/Dave-weiwei/Practice/actions/workflows/python-ci.yml/badge.svg)
 本專案為 Selenium + Pytest + Allure 的自動化測試練習平台，模擬本地測試網頁的各項互動功能（如註冊、登入、輸入、點擊、下拉選單等），並整合 GitHub Actions 持續整合與報告部署。
 
 ---
