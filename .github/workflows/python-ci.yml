@@ -65,3 +65,14 @@ jobs:
         with:
           name: pytest-report
           path: ./reports
+
+      - name: Copy report to public
+        run: |
+          mkdir -p public/allure
+          cp -r reports/*/allure-report_*/* public/allure/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
