@@ -66,10 +66,15 @@ jobs:
           name: pytest-report
           path: ./reports
 
-      - name: Copy report to public
+      - name: Copy Chrome report
         run: |
-          mkdir -p public/allure
-          cp -r reports/*/allure-report_*/* public/allure/
+          mkdir -p public/allure/chrome
+          cp -r reports/*/allure-report_chrome/* public/allure/chrome/
+
+      - name: Copy Firefox report
+        run: |
+          mkdir -p public/allure/firefox
+          cp -r reports/*/allure-report_firefox/* public/allure/firefox/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
