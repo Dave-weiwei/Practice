@@ -13,6 +13,7 @@ pip install -r requirements.txt
 2️⃣ 安裝 Allure CLI
 Windows（使用 Scoop）：
 scoop install allure
+
 Linux / Ubuntu：
 sudo apt install allure
 
