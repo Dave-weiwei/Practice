@@ -1,56 +1,53 @@
-import pymysql
+import os
+import psycopg2
 
 # 資料庫連線設定
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "ok88468ok",  # 改成你自己的 MySQL 密碼
-    "database": "test",
-    "charset": "utf8mb4"
-}
+def get_connection():
+    return psycopg2.connect(
+        host=os.getenv("dpg-d1uu19mr433s73f4fkm0-a"),
+        port=os.getenv("5432"),
+        user=os.getenv("practice_dave"),
+        password=os.getenv("jlbXz5pqIWztluSG6hsOKUMgTXuGny3K"),
+        dbname=os.getenv("practice_db_ns14")
+    )
+
 
 def query_user(username):
-    """
-    只查詢 username 是否存在。
-    回傳 (username,) 或 None
-    """
-    conn = pymysql.connect(**db_config)
-    cursor = conn.cursor()
+    conn = get_connection()
+    cur = conn.cursor()
     try:
-        sql = "SELECT username FROM users WHERE username = %s"
-        cursor.execute(sql, (username,))
-        return cursor.fetchone()
+        cur.execute("SELECT username FROM users WHERE username = %s", (username,))
+        return cur.fetchone()
     finally:
-        cursor.close()
+        cur.close()
         conn.close()
-
 
 def query_user_and_password(username, password):
-    """
-    查詢 username + password 是否完全符合。
-    回傳 (username, password) 或 None
-    """
-    conn = pymysql.connect(**db_config)
-    cursor = conn.cursor()
+    conn = get_connection()
+    cur = conn.cursor()
     try:
-        sql = "SELECT username, password FROM users WHERE username = %s AND password = %s"
-        cursor.execute(sql, (username, password))
-        return cursor.fetchone()
+        cur.execute("SELECT username, password FROM users WHERE username = %s AND password = %s", (username, password))
+        return cur.fetchone()
     finally:
-        cursor.close()
+        cur.close()
         conn.close()
 
-
-def delete_user(username):
-    """
-    刪除指定 username 的使用者（測試後清理用）
-    """
-    conn = pymysql.connect(**db_config)
-    cursor = conn.cursor()
+def insert_user(username, password):
+    conn = get_connection()
+    cur = conn.cursor()
     try:
-        sql = "DELETE FROM users WHERE username = %s"
-        cursor.execute(sql, (username,))
+        cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
         conn.commit()
     finally:
-        cursor.close()
+        cur.close()
+        conn.close()
+
+def delete_user(username):
+    conn = get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("DELETE FROM users WHERE username = %s", (username,))
+        conn.commit()
+    finally:
+        cur.close()
         conn.close()
