@@ -1,3 +1,0 @@
-[DEBUG] register-result: 
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/valid-case-lowercase-password.png
-[!] 錯誤訊息：assert False == True
