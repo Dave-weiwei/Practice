@@ -55,7 +55,7 @@ jobs:
         run: |
           cat flask.log
 
-      - name: 執行測試
+      - name: 執行測試_go
 
         env:
           PG_HOST: ${{ secrets.PG_HOST }}
