@@ -1,17 +1,18 @@
 import os
 import psycopg2
+from dotenv import load_dotenv
 
 # 資料庫連線設定
 def get_connection():
+    load_dotenv()
     return psycopg2.connect(
-        host=os.getenv("dpg-d1uu19mr433s73f4fkm0-a"),
-        port=os.getenv("5432"),
-        user=os.getenv("practice_dave"),
-        password=os.getenv("jlbXz5pqIWztluSG6hsOKUMgTXuGny3K"),
-        dbname=os.getenv("practice_db_ns14")
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        dbname=os.getenv("PG_DB")
     )
-
-
+    
 def query_user(username):
     conn = get_connection()
     cur = conn.cursor()
