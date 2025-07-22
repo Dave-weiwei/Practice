@@ -16,6 +16,7 @@ def test_reg(driver, user, pwd, confirm, expected,request):
     page.open()
     
     def do_test():
+        delete_user(user)
         reg_result=page.reg(user, pwd, confirm)
         assert reg_result == expected
         result = query_user_and_password(user, pwd)
