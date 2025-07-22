@@ -1,22 +1,26 @@
 from flask import Flask, request, jsonify, render_template
-import mysql.connector
 import re
+import os
+import psycopg2
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
 # 資料庫連線
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="ok88468ok",  # ← 改成你的 MySQL 密碼
-    database="test"
+load_dotenv()
+conn = psycopg2.connect(
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    dbname=os.getenv("PG_DB")
 )
 cursor = conn.cursor()
 
 # 建立使用者表（若尚未存在）
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 )
