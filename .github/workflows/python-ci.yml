@@ -64,6 +64,11 @@ jobs:
           PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
           PG_DB: ${{ secrets.PG_DB }}
         run: |
+          echo "HOST=$PG_HOST"
+          echo "PORT=$PG_PORT"
+          echo "USER=$PG_USER"
+          echo "DB=$PG_DB"
+        run: |
           python run_tests.py
 
       - name: 上傳測試結果（可加 Allure HTML）
