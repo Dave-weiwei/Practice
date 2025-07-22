@@ -58,6 +58,10 @@ CI 會根據這個清單逐一執行並產出對應報告。
 tests/fail_screenshots/YYYY-MM-DD/
 便於後續除錯與報告擴充。
 
+Report link:
+https://dave-weiwei.github.io/Practice/allure/chrome/index.html
+https://dave-weiwei.github.io/Practice/allure/firefox/index.html
+
 👤 作者
 Dave Chen（GitHub Actions x 自動化測試整合練習）
 
