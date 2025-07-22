@@ -1,4 +1,0 @@
-[DEBUG] register-result: 註冊失敗：密碼不一致
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/password-confirm-mismatch.png
-[!] 錯誤訊息：預期註冊失敗，但資料竟然寫入資料庫了
-assert ('asdasd@gmail.com', 'OK123123ok') is None
