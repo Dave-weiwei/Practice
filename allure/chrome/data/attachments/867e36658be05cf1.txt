@@ -1,0 +1,1 @@
+[DEBUG] register-result: 註冊失敗：Email 格式錯誤
