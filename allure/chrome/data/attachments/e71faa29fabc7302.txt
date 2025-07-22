@@ -1,3 +1,0 @@
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/invalid-email-at-start.png
-[!] 錯誤訊息：could not translate host name "dpg-d1uu19mr433s73f4fkm0-a.oregon-postgres.render.com/practice_db_ns14" to address: Name or service not known
-
