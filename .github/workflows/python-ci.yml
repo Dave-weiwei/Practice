@@ -47,6 +47,12 @@ jobs:
         run: sleep 20
 
       - name: 啟動 Flask 測試伺服器
+        env:
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_USER: ${{ secrets.PG_USER }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          PG_DB: ${{ secrets.PG_DB }}
         run: |
           python ./web/app.py > flask.log 2>&1 &
           sleep 5
@@ -55,8 +61,7 @@ jobs:
         run: |
           cat flask.log
 
-      - name: 執行測試_go
-
+      - name: 執行測試
         env:
           PG_HOST: ${{ secrets.PG_HOST }}
           PG_PORT: ${{ secrets.PG_PORT }}
