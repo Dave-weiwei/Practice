@@ -17,19 +17,19 @@ def test_reg(driver, user, pwd, confirm, expected,request):
     
     def do_test():
         delete_user(user)
-        reg_result=page.reg(user, pwd, confirm)
-        assert reg_result == expected
-        result = query_user_and_password(user, pwd)
-        if reg_result:
-            # 驗證是否寫入資料庫
-            assert result is not None, "應該成功註冊，但資料庫找不到"
-            assert result[0] == user
-            assert result[1] == pwd
-        else:
-            assert result is None, "預期註冊失敗，但資料竟然寫入資料庫了"
+        try:
+            reg_result=page.reg(user, pwd, confirm)
+            assert reg_result == expected
+            result = query_user_and_password(user, pwd)
+            if reg_result:
+                # 驗證是否寫入資料庫
+                assert result is not None, "應該成功註冊，但資料庫找不到"
+                assert result[0] == user
+                assert result[1] == pwd
+            else:
+                assert result is None, "預期註冊失敗，但資料竟然寫入資料庫了"
 
-            # 測試後刪除資料
-        if result:
+        finally:
             delete_user(user)
 
     pic = extract_parametrize_id(request)
