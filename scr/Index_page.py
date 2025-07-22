@@ -70,12 +70,12 @@ class IndexPage:
         user_pwd.send_keys(password)
         pwd_confirm.send_keys(confirm)
         sub_btn.click()
-        reg_result= self.driver.find_element(By.ID, "register-result").text
         valid_u = self.driver.execute_script("return document.getElementById('reg-username').checkValidity();")
         valid_p = self.driver.execute_script("return document.getElementById('reg-password').checkValidity();")
         valid_c = self.driver.execute_script("return document.getElementById('reg-confirm').checkValidity();")
-        if all([valid_u, valid_p, valid_c]) == True:
+        if all([valid_u, valid_p, valid_c]):
             WebDriverWait(self.driver, 3).until(lambda d: d.find_element(By.ID, "register-result").text != "")
+            reg_result= self.driver.find_element(By.ID, "register-result").text
             print("[DEBUG] register-result:", reg_result)
             if reg_result == "註冊成功":
                 return True
