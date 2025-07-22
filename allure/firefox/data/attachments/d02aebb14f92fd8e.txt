@@ -1,0 +1,3 @@
+[DEBUG] register-result: 帳號已存在
+[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/valid-case-gmail.png
+[!] 錯誤訊息：assert False == True
