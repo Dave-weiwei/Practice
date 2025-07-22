@@ -1,4 +1,0 @@
-[DEBUG] register-result: 註冊成功
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/valid-case-short-domain.png
-[!] 錯誤訊息：應該成功註冊，但資料庫找不到
-assert None is not None
