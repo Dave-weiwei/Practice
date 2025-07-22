@@ -1,4 +1,0 @@
-[DEBUG] register-result: 註冊成功
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-22/valid-case-short-domain.png
-[!] 錯誤訊息：could not translate host name "dpg-d1uu19mr433s73f4fkm0-a" to address: Temporary failure in name resolution
-
