@@ -56,7 +56,15 @@ for browser in BROWSERS:
     print(f"\n✅ Allure 報告已產生：{allure_html}")
     
     if exit_code != 0:
-        print(f"❌ 測試未全通過（{browser}），退出部署流程")
-        sys.exit(exit_code)  # ✅ 加這行讓 GitHub Actions 停止
+        print(f"❌ 測試未通過（{browser}）")
+        overall_exit_code = 1  # ✅ 標記為失敗（但不馬上中止）
+
+# 最後統一退出
+if overall_exit_code != 0:
+    print("❌ 測試總結：至少有一組瀏覽器測試失敗")
+else:
+    print("✅ 所有瀏覽器測試通過")
+
+sys.exit(overall_exit_code)
 
 index_file = os.path.join(allure_html, "index.html")
