@@ -13,7 +13,7 @@ def test_default_check(driver, sel_item, expected , request):
     page.open()
     def do_test():
         sel_text, show_val=page.select(sel_item)
-        assert sel_text == "qwe"
+        assert sel_text == expected
         assert show_val == expected
     
     pic = extract_parametrize_id(request)
