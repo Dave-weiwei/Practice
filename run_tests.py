@@ -28,6 +28,7 @@ if shutil.which(allure_cli) is None:
     exit(1)
 
 
+overall_exit_code = 0
 
 for browser in BROWSERS:
     print(f"\n🔍 執行 {browser} 測試...")
