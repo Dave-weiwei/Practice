@@ -58,6 +58,7 @@ https://autotest-deploy.onrender.com/
 ---
 
 ## 🗂️ 目錄結構（Repo A）
+```bash
 .
 ├── app.py                   # Flask 應用主程式
 ├── templates/testweb.html   # 網頁 HTML 前端
