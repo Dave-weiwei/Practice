@@ -1,70 +1,77 @@
 # 🧪 Web 自動化測試練習平台
 
 ![CI Status](https://github.com/Dave-weiwei/Practice/actions/workflows/python-ci.yml/badge.svg)
-本專案為 Selenium + Pytest + Allure 的自動化測試練習平台，模擬本地測試網頁的各項互動功能（如註冊、登入、輸入、點擊、下拉選單等），並整合 GitHub Actions 持續整合與報告部署。
+
+AutoTest Practice Project (Repo A)
+Flask + pytest + GitHub Actions + Render 自動化測試與部署練習專案
 
 ---
 
-## 📦 安裝與執行
+## 📌 專案簡介
+此專案為完整的自動化測試實作練習，包含：
+- 使用 Python + Selenium + pytest 撰寫網頁互動測試
+- 整合 GitHub Actions 自動化測試流程（CI）
+- 測試通過後自動同步 Web 檔案至部署用 Repo（CD）
+- Flask 提供簡易註冊／登入功能（含資料庫驗證）
+- 使用 PostgreSQL 作為後端資料庫
 
-### 1️⃣ 安裝 Python 套件
+---
 
-pip install -r requirements.txt
+## 🏗️ 專案架構（多 Repo 分工）
+| Repo | 內容 | 用途 |
+|------|------|------|
+| ✅ Repo A（本專案） | 全部原始碼與測試程式碼<br>含 CI 自動測試 + 同步腳本 | 開發、測試、CI |
+| ✅ Repo B           | 僅包含部署用 Web 檔案<br>含 `render.yaml` 設定 | 自動部署到 Render |
 
-2️⃣ 安裝 Allure CLI
+---
 
-Windows（使用 Scoop）：
-scoop install allure
+## 🌐 Demo 網站（自動部署）
+https://autotest-deploy.onrender.com/
+使用 Render 免費服務部署 Flask Web，支援註冊 / 登入功能與驗證
 
-Linux / Ubuntu：
-sudo apt install allure
+---
 
-3️⃣ 執行測試與產出報告
+## 🧪 測試技術（pytest）
+- 使用 `pytest.mark.parametrize` 搭配 `JSON` 測資自動化測試輸入行為
+- 自訂 `conftest.py` 實作瀏覽器啟動（chrome/firefox）
+- 自動化失敗時截圖功能 `use_try(...)`
+- 每日自動產出 Allure 測試報告
 
-python run_tests.py
-測試完成後，Allure 報告會輸出至：
-reports/YYYY-MM-DD/allure-report_chrome/
-reports/YYYY-MM-DD/allure-report_firefox/
-🌐 GitHub Pages 報告連結
-瀏覽器 線上報告連結
-Chrome 📊 查看報告
-Firefox 📊 查看報告
+---
 
-每次 CI/CD 完成，會自動更新這些頁面
+## ⚙️ CI/CD 流程
+1. Push 到 Repo A（main 分支）
+2. 執行 pytest + Allure + Coverage 測試（CI）
+3. 測試成功時，自動將 Web 檔案（`app.py`、`templates/`、`requirements.txt`）推送到 Repo B（CD）
+4. Repo B 包含 `render.yaml`，Render 偵測後自動重新部署網站
 
-🧪 多瀏覽器支援
-你可以在 test_settings.py 中控制測試瀏覽器：
-BROWSERS = ["chrome", "firefox"]
-CI 會根據這個清單逐一執行並產出對應報告。
+---
 
-🔁 CI/CD 自動化流程說明（GitHub Actions）
-功能包含： -啟動本地 Flask 測試伺服器 -連接 MySQL 測試資料庫 -自動執行 pytest 測試（Chrome / Firefox）
--Allure 報告自動產出 -上傳測試報告至 GitHub Artifact -上傳 Allure HTML 報告至 GitHub Pages（並提供固定連結） -工作流程檔案：.github/workflows/python-ci.yml
+## 🧰 使用技術
+- Python 3.13
+- Flask
+- Selenium + pytest
+- PostgreSQL
+- GitHub Actions
+- Render (雲端部署)
 
-📂 專案結構摘要
+---
+
+## 🗂️ 目錄結構（Repo A）
 .
-├── tests/ # 測試案例（pytest）
-├── scr/ # 封裝模組（PageObject、錯誤截圖等）
-├── json/ # 測試資料 JSON
-├── web/ # 測試目標 Flask 本地網頁
-├── run_tests.py # 一鍵測試與報告主腳本
-├── pytest.ini # pytest 設定檔
-├── requirements.txt # 相依套件清單
-├── .github/workflows/ # CI 設定檔
-└── reports/ # 測試報告輸出目錄
-🖼️ 錯誤截圖自動儲存
-測試失敗時，自動截圖儲存至：
-
-tests/fail_screenshots/YYYY-MM-DD/
-便於後續除錯與報告擴充。
+├── app.py                   # Flask 應用主程式
+├── templates/testweb.html   # 網頁 HTML 前端
+├── tests/                   # 自動化測試腳本
+├── scr/                     # 測試封裝邏輯（Page Object）
+├── json/                    # 測試用資料集（JSON）
+├── requirements.txt
+├── .github/workflows/
+│   ├── python-ci.yml        # CI 測試流程
+│   └── deploy-to-repo-b.yml # 測試成功後自動同步到 Repo B
+└──（render.yaml 僅存在於 Repo B）
 
 Report link:
 https://dave-weiwei.github.io/Practice/allure/chrome/index.html
 https://dave-weiwei.github.io/Practice/allure/firefox/index.html
 
-👤 作者
-Dave Chen（GitHub Actions x 自動化測試整合練習）
-
-```
-
-```
+作者：[@Dave-weiwei](https://github.com/Dave-weiwei)
