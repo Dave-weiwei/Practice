@@ -26,10 +26,10 @@ jobs:
 
       - name: 🚀 Copy web files to AutoTest-Deploy
         run: |
-          cp app.py repo-b/
+          cp web/app.py repo-b/
           cp web_requirements.txt repo-b/requirements.txt
           mkdir -p repo-b/templates
-          cp -r templates/* repo-b/templates/
+          cp -r web/templates/* repo-b/templates/
 
       - name: ✅ Commit and Push to AutoTest-Deploy
         run: |
