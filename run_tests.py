@@ -3,7 +3,7 @@ import pytest
 import subprocess
 from datetime import datetime
 import shutil
-import webbrowser
+import sys
 import platform
 from test_settings import BROWSERS, REPORT_ROOT
 
@@ -47,14 +47,16 @@ for browser in BROWSERS:
         f"--log-file={log_file}"
     ]
 
-    pytest.main(pytest_args)
+    exit_code = pytest.main(pytest_args)
 
     # 4. 執行結束後，自動產生 Allure HTML 報告
     print("\n📊 產生 Allure 報告...")
     subprocess.run([allure_cli, "generate", allure_raw, "-o", allure_html, "--clean"], check=True)
 
     print(f"\n✅ Allure 報告已產生：{allure_html}")
+    
+    if exit_code != 0:
+        print(f"❌ 測試未全通過（{browser}），退出部署流程")
+        sys.exit(exit_code)  # ✅ 加這行讓 GitHub Actions 停止
 
 index_file = os.path.join(allure_html, "index.html")
-# subprocess.run([allure_cli, "serve", allure_raw])
-# webbrowser.open(f"file://{os.path.abspath(index_file)}")
