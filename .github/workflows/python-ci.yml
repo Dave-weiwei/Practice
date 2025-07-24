@@ -62,17 +62,20 @@ jobs:
           path: ./reports
 
       - name: Copy Chrome report
+        if: always()
         run: |
           mkdir -p public/allure/chrome
           cp -r reports/*/allure-report_chrome/* public/allure/chrome/
 
       - name: Copy Firefox report
+        if: always()
         run: |
           mkdir -p public/allure/firefox
           cp -r reports/*/allure-report_firefox/* public/allure/firefox/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
