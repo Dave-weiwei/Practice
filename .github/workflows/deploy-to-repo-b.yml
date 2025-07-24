@@ -1,0 +1,39 @@
+name: Deploy Web to Repo B
+
+on:
+  workflow_run:
+    workflows: ["Python-practice-Test-CI"] # ✅ 這裡對應你前面命名的 CI
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # ✅ 測試成功才執行
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔽 Checkout Practice
+        uses: actions/checkout@v4
+
+      - name: 🧱 Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 📁 Clone AutoTest-Deploy
+        run: |
+          git clone https://x-access-token:${{ secrets.DEPLOY_PAT }}@github.com/Dave-weiwei/AutoTest-Deploy.git repo-b
+
+      - name: 🚀 Copy web files to AutoTest-Deploy
+        run: |
+          cp app.py repo-b/
+          cp web_requirements.txt repo-b/requirements.txt
+          mkdir -p repo-b/templates
+          cp -r templates/* repo-b/templates/
+
+      - name: ✅ Commit and Push to AutoTest-Deploy
+        run: |
+          cd repo-b
+          git add .
+          git commit -m "自動同步 Web 更新 from Practice 🚀" || echo "No changes to commit"
+          git push
