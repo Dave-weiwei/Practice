@@ -1,5 +1,0 @@
-[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-07-24/select-option-2.png
-[!] 錯誤訊息：assert '選項二' == 'qwe'
-  
-  - qwe
-  + 選項二
