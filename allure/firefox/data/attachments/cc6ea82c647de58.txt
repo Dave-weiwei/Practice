@@ -1,0 +1,1 @@
+[DEBUG] register-result: 註冊失敗：密碼不一致
