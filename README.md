@@ -1,7 +1,11 @@
 # 自動化測試專案
 
 本專案使用 **Python + Pytest + Selenium** 進行 UI 自動化測試，並搭配 **PostgreSQL** 進行資料驗證。  
-測試對象為練習用本地網頁（含註冊、登入、按鈕點擊、下拉選單、表單提交等功能）。
+測試對象為練習用網頁（含註冊、登入、按鈕點擊、下拉選單、表單提交等功能）。
+
+## 🌐 測試網頁位置
+
+- [https://autotest-deploy.onrender.com/]
 
 ## 📂 專案結構
 
@@ -68,6 +72,10 @@ UI 測試
 .資料庫查詢驗證
 .錯誤追蹤
 .測試失敗自動截圖（use_try）
+
+Report link:
+https://dave-weiwei.github.io/Practice/allure/chrome/index.html
+https://dave-weiwei.github.io/Practice/allure/firefox/index.html
 
 💡 專案價值與實務應用
 本專案雖為練習性質，但設計時已盡量模擬實務中的自動化測試流程：
