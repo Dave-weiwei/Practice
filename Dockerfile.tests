@@ -8,16 +8,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxdamage1 libxext6 libxfixes3 libxi6 libxtst6 \
     libxrandr2 libasound2 libatk1.0-0 libgtk-3-0 libgbm1 libxss1 \
  && curl -o allure.zip -L https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip \
+ && unzip allure.zip -d /opt/ \
+ && ln -s /opt/allure-2.27.0/bin/allure /usr/bin/allure \
+ && rm -f allure.zip \
+ && rm -rf /var/lib/apt/lists/*
 
- # 安裝 Chrome（固定測試版）
-RUN curl -sSL https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.68/linux64/chrome-linux64.zip -o chrome.zip \
+RUN curl -sL https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz \
+  | tar -xz -C /usr/local/bin
+
+# 安裝 Chrome（固定測試版）
+RUN curl -ssl https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.68/linux64/chrome-linux64.zip -o chrome.zip \
  && unzip chrome.zip \
- && mv chrome-linux /opt/chrome \
+ && mv chrome-linux64 /opt/chrome \
  && ln -s /opt/chrome/chrome /usr/bin/google-chrome \
  && rm chrome.zip
 
- # 安裝對應版 ChromeDriver
- curl -sSL https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.68/linux64/chromedriver-linux64.zip -o chromedriver.zip \
+# 安裝對應版 ChromeDriver
+RUN curl -sSL https://storage.googleapis.com/chrome-for-testing-public/139.0.7258.68/linux64/chromedriver-linux64.zip -o chromedriver.zip \
  && unzip chromedriver.zip \
  && mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
  && chmod +x /usr/local/bin/chromedriver \

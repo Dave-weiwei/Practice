@@ -2,11 +2,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
+import os
 
 class IndexPage:
     def __init__(self,driver):
         self.driver=driver
-        self.url="http://127.0.0.1:5000/"
+        base = os.getenv("BASE_URL", "http://127.0.0.1:5000/")
+        if not base.startswith("http"):
+            base = "http://" + base
+        if not base.endswith("/"):
+            base += "/"
+        self.url = base
         
     def open(self):
         self.driver.get(self.url)

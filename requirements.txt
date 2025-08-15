@@ -5,6 +5,7 @@ selenium
 pymysql
 mysql-connector-python
 flask
+python-dotenv
 # webdriver-manager
 psycopg2-binary
 # psycopg2
