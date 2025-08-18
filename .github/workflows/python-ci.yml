@@ -1,9 +1,7 @@
-name: Python-practice-Test-CI
+name: Docker UI Tests with Allure
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
@@ -11,53 +9,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 檢出程式碼
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: 安裝 Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
+      - name: Set up Docker Compose
+        run: docker compose version
 
-      - name: 安裝套件
+      # ✅ 產生 .env 檔（給容器用）
+      - name: Generate .env from GitHub Secrets
         run: |
-          pip install -r requirements.txt
-          sudo apt-get update
-          sudo apt-get install -y unzip openjdk-11-jre
-          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
-          tar -zxvf allure-2.27.0.tgz
-          sudo mv allure-2.27.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+          echo "PG_HOST=${{ secrets.PG_HOST }}" >> .env
+          echo "PG_PORT=${{ secrets.PG_PORT }}" >> .env
+          echo "PG_USER=${{ secrets.PG_USER }}" >> .env
+          echo "PG_PASSWORD=${{ secrets.PG_PASSWORD }}" >> .env
+          echo "PG_DB=${{ secrets.PG_DB }}" >> .env
+          echo "FLASK_ENV=production" >> .env
+          echo "BASE_URL=http://web:5000" >> .env
 
-      - name: 安裝中文字型
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk
+      # ✅ 啟動 Flask Web（背景模式）
+      - name: Start Web Container
+        run: make up
 
-      - name: 啟動 Flask 測試伺服器
-        env:
-          PG_HOST: ${{ secrets.PG_HOST }}
-          PG_PORT: ${{ secrets.PG_PORT }}
-          PG_USER: ${{ secrets.PG_USER }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          PG_DB: ${{ secrets.PG_DB }}
-        run: |
-          python ./web/app.py > flask.log 2>&1 &
-          sleep 5
-
-      - name: 顯示 Flask 啟動記錄（flask.log）
-        run: |
-          cat flask.log
-
-      - name: 執行測試
-        env:
-          PG_HOST: ${{ secrets.PG_HOST }}
-          PG_PORT: ${{ secrets.PG_PORT }}
-          PG_USER: ${{ secrets.PG_USER }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          PG_DB: ${{ secrets.PG_DB }}
-        run: |
-          python run_tests.py
+      # ✅ 執行測試容器
+      - name: Run Selenium Tests
+        run: make test
 
       - name: 上傳測試結果（可加 Allure HTML）
         if: always()
@@ -79,7 +54,7 @@ jobs:
           cp -r reports/*/allure-report_firefox/* public/allure/firefox/
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
