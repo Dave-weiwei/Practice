@@ -56,10 +56,45 @@ PG_DB=your-db-name
 ```bash
 make up           # 啟動 web 容器
 make test         # 執行測試
-make report       # 產生 Allure HTML 報告
-make open         # 開啟本機報告
-make clean        # 清除報告
 ```
+
+## ✅ 測試項目與覆蓋範圍
+
+目前自動化測試已涵蓋以下功能區塊，並針對「正確流程」與「錯誤情境」皆有撰寫驗證：
+
+### 🧪 UI 功能測試（Selenium）
+
+| 功能區塊 | 驗證項目說明                                                        |
+| -------- | ------------------------------------------------------------------- |
+| 首頁顯示 | 驗證主標題、次標題、按鈕點擊是否正常反應                            |
+| 表單填寫 | 測試輸入欄位的值是否能正確顯示與提交                                |
+| 下拉選單 | 驗證下拉選項選取後顯示正確結果                                      |
+| 註冊功能 | ✅ 成功註冊流程 / ❌ 錯誤格式帳號、密碼、密碼不一致 / ❌ 已註冊帳號 |
+| 登入功能 | ✅ 正確帳密登入 / ❌ 錯誤帳號/密碼、未註冊帳號                      |
+
+- 所有測試皆支援多瀏覽器（Chrome / Firefox）
+- 錯誤案例將自動截圖並儲存於 `tests/fail_screenshots/` 下
+
+### 📡 API 層級測試（[可擴充]）
+
+目前尚未加入，但規劃可針對 `/register`、`/login` 做獨立 API 驗證（使用 `requests + pytest` 實作）
+
+### 🔍 資料驗證（資料庫）
+
+部分測試案例會搭配 PostgreSQL 檢查以下項目：
+
+| 項目             | 驗證說明                                   |
+| ---------------- | ------------------------------------------ |
+| 帳號是否成功註冊 | 驗證 DB 中是否建立對應 username/password   |
+| 登入帳密是否存在 | 驗證輸入帳密與資料庫是否一致               |
+| 清除測試資料     | 測試結束自動刪除測試帳號（避免污染資料庫） |
+
+### 📊 覆蓋度與設計策略
+
+- 採用 `pytest.mark.parametrize` 搭配 JSON 檔案統一管理測資
+- 每筆測試皆具備 ID 名稱，利於失敗診斷與報告標示
+- 使用 `pytest-cov` 可顯示測試覆蓋率（若未來加入模組內邏輯測試）
+  """
 
 ## 🐳 Docker 整合
 
@@ -81,7 +116,8 @@ make clean        # 清除報告
 ## 🔍 測試報告展示
 
 GitHub Pages（自動部署）：  
-👉 [Allure 測試報告](https://你的帳號.github.io/你的repo名/allure/chrome/)
+👉 [Allure 測試報告- chrome](https://dave-weiwei.github.io/Practice/allure/chrome/index.html)
+👉 [Allure 測試報告- firefox](https://dave-weiwei.github.io/Practice/allure/firefox/index.html)
 
 ## 🔒 GitHub Secrets 設定
 
