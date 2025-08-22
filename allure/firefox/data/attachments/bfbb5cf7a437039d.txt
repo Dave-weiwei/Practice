@@ -1,0 +1,3 @@
+[!] 測試失敗，自動截圖已儲存：tests/fail_screenshots/2025-08-22/log_fail_wrong_pwd.png
+[!] 錯誤訊息：Message: 
+
